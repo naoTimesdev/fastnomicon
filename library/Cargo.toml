@@ -1,0 +1,14 @@
+[package]
+name = "fastnomicon"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+rust-version.workspace = true
+description = "A collection of utilities used by naoTimes bot"
+readme = "../README.md"
+
+[dependencies]
+nom.workspace = true

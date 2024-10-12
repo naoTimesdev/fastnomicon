@@ -1,0 +1,18 @@
+[workspace]
+resolver = "2"
+members = [
+    "library",
+    "python",
+]
+
+[workspace.package]
+version = "0.1.0-dev"
+edition = "2021"
+authors = ["noaione <noaione@n4o.xyz>"]
+license = "MPL-2.0"
+repository = "https://github.com/naoTimesdev/fastnomicon"
+homepage = "https://naoti.me"
+rust-version = "1.80.0"
+
+[workspace.dependencies]
+nom = "7.1.3"
