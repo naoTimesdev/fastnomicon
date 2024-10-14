@@ -16,5 +16,5 @@ pyo3 = { version = "0.22.4", features = ["extension-module"] }
 fastnomicon = { path = "../library" }
 
 [lib]
-name = "fastnomicon"
+name = "_fastnomicon"
 crate-type = ["cdylib"]

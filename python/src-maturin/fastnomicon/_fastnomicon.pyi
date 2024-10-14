@@ -7,9 +7,12 @@ A collection of fast utilities used by naoTimes bot
 :license: MPL 2.0, see LICENSE for more details.
 """
 
+from __future__ import annotations
+
 from datetime import timedelta
 
 __version__: str
+"""Current version of fastnomicon"""
 
 class TimeScale:
     Milliseconds: TimeScale
@@ -137,7 +140,7 @@ def execute_math_expr(input: str) -> float:
     - `normal(mu, sigma)` — Normal distribution
     - `uniform(mu, sigma)` — Uniform distribution
     - `lognormal(mu, sigma)` — Log-normal distribution
-    
+
     The following function is powered by the [shunting](https://github.com/rodolf0/tox/tree/master/shunting) crate.
 
     Parameters
