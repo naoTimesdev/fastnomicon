@@ -1,7 +1,7 @@
 """
 fastnomicion
 ~~~~~~~~~~~~
-A collection of utilities used by naoTimes bot
+A collection of fast utilities used by naoTimes bot
 
 :copyright: (c) 2024-present naoTimesdev
 :license: MPL 2.0, see LICENSE for more details.
@@ -93,7 +93,6 @@ def parse_timestring(input: str) -> list[TimeTuple]:
     ValueError
         If an invalid input is entered
     """
-    ...
 
 def parse_timestring_as_timedelta(input: str) -> timedelta:
     """Parse a timestring formatted input into a :class:`timedelta` or duration
@@ -116,29 +115,30 @@ def parse_timestring_as_timedelta(input: str) -> timedelta:
     ValueError
         If an invalid input is entered
     """
-    ...
 
 def execute_math_expr(input: str) -> float:
-    """Execute a mathematical expression using Shunting yard algorithm
+    """Execute a mathematical expression using **Shunting-yard** algorithm
 
     All the standard math operators are supported with extended support for:
-    - abs
-    - atan2
-    - cos
-    - log(10)
-    - max
-    - min
-    - nCr
-    - nMCr
-    - nMPr
-    - nPr
-    - rand
-    - sing
+    - `abs(x)` — Absolute number of x
+    - `atan2(x, y)` — 2-argument arctangent
+    - `cos(x)` — Cosine
+    - `log(x)` — Logarithmic 10
+    - `max(x, y, z, ...)` — Largest number, can be repeated
+    - `min(x, y, z, ..)` — Smallest number, can be repeated
+    - `nCr(x, y)` — Combination (order not important)
+    - `nMCr(x, y)` — Multi combination
+    - `nMPr(x, y)` — Power of number (order not important)
+    - `nPr(x, y)` — Permutation
+    - `rand(x)` — Random number multiplied by x
+    - `sin(x)` — Sine
 
     Also the following math function are supported:
-    - normal()
-    - uniform()
-    - lognormal()
+    - `normal(mu, sigma)` — Normal distribution
+    - `uniform(mu, sigma)` — Uniform distribution
+    - `lognormal(mu, sigma)` — Log-normal distribution
+    
+    The following function is powered by the [shunting](https://github.com/rodolf0/tox/tree/master/shunting) crate.
 
     Parameters
     ----------
