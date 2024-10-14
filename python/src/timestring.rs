@@ -1,10 +1,13 @@
-use std::time::Duration;
+use std::{
+    hash::{DefaultHasher, Hash, Hasher},
+    time::Duration,
+};
 
-use pyo3::{exceptions::PyValueError, prelude::*};
+use pyo3::{basic::CompareOp, exceptions::PyValueError, prelude::*};
 
 /// The time scale of the duration
 #[pyclass(eq, eq_int)]
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, Copy, PartialEq, Hash)]
 pub enum TimeScale {
     /// Milliseconds timescale, 1/1000 of a second
     Milliseconds,
@@ -115,6 +118,24 @@ impl TimeTuple {
             self.time(),
             self.scale().__repr__()
         )
+    }
+
+    fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
+        match op {
+            CompareOp::Lt => Ok(self.time() < other.time()),
+            CompareOp::Le => Ok(self.time() <= other.time()),
+            CompareOp::Gt => Ok(self.time() > other.time()),
+            CompareOp::Ge => Ok(self.time() >= other.time()),
+            CompareOp::Eq => Ok(self.time() == other.time() && self.scale() == other.scale()),
+            CompareOp::Ne => Ok(self.time() != other.time() || self.scale() != other.scale()),
+        }
+    }
+
+    fn __hash__(&self) -> u64 {
+        let mut hasher = DefaultHasher::new();
+        self.time().hash(&mut hasher);
+        self.scale().hash(&mut hasher);
+        hasher.finish()
     }
 }
 

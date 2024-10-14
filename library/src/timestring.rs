@@ -3,10 +3,8 @@
 use std::time::Duration;
 
 use nom::{
-    branch::alt,
-    bytes::complete::tag,
-    character::complete::{char, digit1, multispace0, space0},
-    combinator::{map_res, recognize},
+    character::complete::{alpha1, digit1, multispace0},
+    combinator::map_res,
     multi::many1,
     sequence::{delimited, pair},
     IResult,
@@ -78,103 +76,12 @@ fn parse_number(input: &str) -> IResult<&str, u16> {
     map_res(digit1, str::parse)(input)
 }
 
-fn parse_6char_or_more_unit(input: &str) -> IResult<&str, &str> {
-    alt((
-        recognize(tag("miliseconds")),
-        recognize(tag("milisecond")),
-        recognize(tag("minutes")),
-        recognize(tag("seconds")),
-        recognize(tag("milisec")),
-        recognize(tag("minute")),
-        recognize(tag("second")),
-        recognize(tag("months")),
-        recognize(tag("minggu")),
-        recognize(tag("millis")),
-    ))(input)
-}
-
-fn parse_5char_unit(input: &str) -> IResult<&str, &str> {
-    alt((
-        recognize(tag("years")),
-        recognize(tag("tahun")),
-        recognize(tag("month")),
-        recognize(tag("bulan")),
-        recognize(tag("hours")),
-        recognize(tag("menit")),
-        recognize(tag("detik")),
-        recognize(tag("milli")),
-        recognize(tag("msecs")),
-    ))(input)
-}
-
-fn parse_4char_unit(input: &str) -> IResult<&str, &str> {
-    alt((
-        recognize(tag("year")),
-        recognize(tag("week")),
-        recognize(tag("days")),
-        recognize(tag("hari")),
-        recognize(tag("hour")),
-        recognize(tag("mins")),
-        recognize(tag("secs")),
-        recognize(tag("mili")),
-        recognize(tag("msec")),
-    ))(input)
-}
-
-fn parse_3char_unit(input: &str) -> IResult<&str, &str> {
-    alt((
-        recognize(tag("thn")),
-        recognize(tag("bln")),
-        recognize(tag("mng")),
-        recognize(tag("day")),
-        recognize(tag("hrs")),
-        recognize(tag("jam")),
-        recognize(tag("min")),
-        recognize(tag("mnt")),
-        recognize(tag("sec")),
-        recognize(tag("dtk")),
-        recognize(tag("mil")),
-    ))(input)
-}
-
-fn parse_2char_unit(input: &str) -> IResult<&str, &str> {
-    alt((
-        recognize(tag("mo")), // Month
-        recognize(tag("wk")), // Week
-        recognize(tag("hr")), // Hour
-        recognize(tag("ms")), // Milisecond
-    ))(input)
-}
-
-fn parse_1char_unit(input: &str) -> IResult<&str, &str> {
-    alt((
-        recognize(char('y')), // Year
-        recognize(char('t')), // Year
-        recognize(char('M')), // Month
-        recognize(char('b')), // Month
-        recognize(char('w')), // Week
-        recognize(char('d')), // Day
-        recognize(char('h')), // Hour
-        recognize(char('j')), // Hour
-        recognize(char('m')), // Minute
-        recognize(char('s')), // Second
-    ))(input)
-}
-
 fn parse_unit(input: &str) -> IResult<&str, &str> {
-    alt((
-        parse_6char_or_more_unit,
-        parse_5char_unit,
-        parse_4char_unit,
-        parse_3char_unit,
-        parse_2char_unit,
-        parse_1char_unit,
-    ))(input)
+    delimited(multispace0, alpha1, multispace0)(input)
 }
 
 fn parse_time_component(input: &str) -> IResult<&str, TimeTuple> {
-    let (rest, (number, unit)) =
-        pair(parse_number, delimited(space0, parse_unit, multispace0))(input)?;
+    let (rest, (number, unit)) = pair(parse_number, parse_unit)(input)?;
 
     let time_unit = match unit {
         "y" | "year" | "years" | "t" | "thn" | "tahun" => TimeScale::Years,
@@ -187,7 +94,7 @@ fn parse_time_component(input: &str) -> IResult<&str, TimeTuple> {
         "ms" | "mil" | "mill" | "millis" | "milli" | "msec" | "msecs" | "milisec"
         | "miliseconds" | "milisecond" => TimeScale::Milliseconds,
         _ => {
-            return Err(nom::Err::Error(nom::error::make_error(
+            return Err(nom::Err::Failure(nom::error::make_error(
                 unit,
                 nom::error::ErrorKind::Tag,
             )));
@@ -204,7 +111,7 @@ fn parse_time_component(input: &str) -> IResult<&str, TimeTuple> {
 /// # Note
 /// - We only support number up to `65535` on each time scale.
 pub fn parse_timestring_as_duration(input: &str) -> IResult<&str, Duration> {
-    let (input, time_units) = many1(parse_time_component)(input)?;
+    let (input, time_units) = parse_timestring(input)?;
 
     // Check if all None
     let duration = time_units
