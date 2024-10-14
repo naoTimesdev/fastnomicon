@@ -12,3 +12,4 @@ readme = "../README.md"
 
 [dependencies]
 nom.workspace = true
+shunting.workspace = true

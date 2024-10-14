@@ -117,3 +117,41 @@ def parse_timestring_as_timedelta(input: str) -> timedelta:
         If an invalid input is entered
     """
     ...
+
+def execute_math_expr(input: str) -> float:
+    """Execute a mathematical expression using Shunting yard algorithm
+
+    All the standard math operators are supported with extended support for:
+    - abs
+    - atan2
+    - cos
+    - log(10)
+    - max
+    - min
+    - nCr
+    - nMCr
+    - nMPr
+    - nPr
+    - rand
+    - sing
+
+    Also the following math function are supported:
+    - normal()
+    - uniform()
+    - lognormal()
+
+    Parameters
+    ----------
+    input: :class:`str`
+        The math expression to be executed
+
+    Returns
+    -------
+    :class:`float`
+        The resulting number
+
+    Raises
+    ------
+    ValueError
+        If an invalid input is entered
+    """
