@@ -6,7 +6,7 @@ members = [
 ]
 
 [workspace.package]
-version = "0.1.0-dev"
+version = "0.1.0"
 edition = "2021"
 authors = ["noaione <noaione@n4o.xyz>"]
 license = "MPL-2.0"
