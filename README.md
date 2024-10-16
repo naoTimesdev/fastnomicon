@@ -39,7 +39,7 @@ The following function are supported in the expression, extending the standard P
 - `cos(x)` — Cosine
 - `log(x)` — Logarithmic 10
 - `max(x, y, z, ...)` — Largest number, can be repeated
-- `min(x, y, z, ..)` — Smallest number, can be repeated
+- `min(x, y, z, ...)` — Smallest number, can be repeated
 - `nCr(x, y)` — Combination (order not important)
 - `nMCr(x, y)` — Multi combination
 - `nMPr(x, y)` — Power of number (order not important)
@@ -50,6 +50,11 @@ The following function are supported in the expression, extending the standard P
 - `uniform(mu, sigma)` — Uniform distribution
 - `lognormal(mu, sigma)` — Log-normal distribution
 
+We also provide the following approximation constants:
+- `pi` — `3.141592653589793`, Archimedes' constant (π)
+- `tau` — `6.283185307179586`, The full circle constant (τ)
+- `e` — `2.718281828459045`, The Euler's number constant (e)
+
 ## License
 
-MPL-2.0
+The fastnomicon crate and python bindings are licensed under the [MPL 2.0](https://mozilla.org/MPL/2.0/) license.

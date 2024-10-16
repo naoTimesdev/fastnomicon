@@ -49,6 +49,18 @@ def test_absolute():
     assert result == 5.0
 
 
+def test_approx_math_constants():
+    result = execute_math_expr("pi")
+    assert result == 3.141592653589793
+
+    result = execute_math_expr("e")
+    assert result == 2.718281828459045
+
+    result = execute_math_expr("tau")
+    assert result == 6.283185307179586
+
+
+
 def test_unknown_math():
     with raises(ValueError) as err:
         execute_math_expr("PI * 2")  # It's `pi` all lowercase and not `PI`
