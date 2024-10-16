@@ -136,10 +136,15 @@ def execute_math_expr(input: str) -> float:
     - `rand(x)` — Random number multiplied by x
     - `sin(x)` — Sine
 
-    Also the following math function are supported:
+    With the additional random distribution functions:
     - `normal(mu, sigma)` — Normal distribution
     - `uniform(mu, sigma)` — Uniform distribution
     - `lognormal(mu, sigma)` — Log-normal distribution
+
+    And the following approximation constants:
+    - `pi` — `3.141592653589793`, Archimedes' constant (π)
+    - `tau` — `6.283185307179586`, The full circle constant (τ)
+    - `e` — `2.718281828459045`, The Euler's number constant (e)
 
     The following function is powered by the [shunting](https://github.com/rodolf0/tox/tree/master/shunting) crate.
 
