@@ -1,7 +1,7 @@
 """
-fastnomicion
-~~~~~~~~~~~~
-A collection of fast utilities used by naoTimes bot
+fastnomicion._fastnomicon
+~~~~~~~~~~~~~~~~~~~~~~~~~
+The `.pyd` file for fastnomicon, contains the internal library written in Rust.
 
 :copyright: (c) 2024-present naoTimesdev
 :license: MPL 2.0, see LICENSE for more details.
@@ -54,7 +54,7 @@ class TimeTuple:
     A simple time tuple that wraps a number in seconds and the time scale.
     """
 
-    def __init__(self, time: int, scale: TimeScale) -> None:
+    def __init__(self, *, time: int, scale: TimeScale = TimeScale.Seconds) -> None:
         """Create a new instance of TimeTuple"""
         ...
 
@@ -128,7 +128,7 @@ def execute_math_expr(input: str) -> float:
     - `cos(x)` — Cosine
     - `log(x)` — Logarithmic 10
     - `max(x, y, z, ...)` — Largest number, can be repeated
-    - `min(x, y, z, ..)` — Smallest number, can be repeated
+    - `min(x, y, z, ...)` — Smallest number, can be repeated
     - `nCr(x, y)` — Combination (order not important)
     - `nMCr(x, y)` — Multi combination
     - `nMPr(x, y)` — Power of number (order not important)

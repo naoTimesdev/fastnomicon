@@ -6,7 +6,7 @@ use std::{
 use pyo3::{basic::CompareOp, exceptions::PyValueError, prelude::*};
 
 /// The time scale of the duration
-#[pyclass(eq, eq_int)]
+#[pyclass(eq, eq_int, frozen)]
 #[derive(Clone, Copy, PartialEq, Hash)]
 pub enum TimeScale {
     /// Milliseconds timescale, 1/1000 of a second
@@ -66,7 +66,7 @@ impl TimeScale {
 }
 
 /// A simple time tuple that wraps a number in seconds and the time scale.
-#[pyclass]
+#[pyclass(frozen)]
 pub struct TimeTuple {
     time: u16,
     scale: TimeScale,
@@ -76,6 +76,7 @@ pub struct TimeTuple {
 impl TimeTuple {
     /// Create a new instance of [`TimeTuple`]
     #[new]
+    #[pyo3(signature = (*, time, scale = TimeScale::Seconds))]
     pub fn new(time: u16, scale: TimeScale) -> Self {
         Self { time, scale }
     }

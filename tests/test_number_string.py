@@ -20,3 +20,12 @@ def test_invalid_timestring():
     with raises(ValueError) as err:
         parse_timestring("1h30xxxx")
     assert 'Error { input: "xxxx", code: Tag }' in str(err.value)
+
+
+def test_timestring_attributes():
+    data_def = TimeTuple(time=20)
+    assert data_def.time == 20
+    assert data_def.scale == TimeScale.Seconds
+    data_override = TimeTuple(time=15, scale=TimeScale.Minutes)
+    assert data_override.time == 15
+    assert data_override.scale == TimeScale.Minutes
