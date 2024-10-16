@@ -1,27 +1,39 @@
-#:schema https://json.schemastore.org/pyproject.json
-
 [project]
 name = "fastnomicon"
 description = "A collection of fast utilities used by naoTimes bot"
-requires-python = ">=3.10"
-classifiers = [
-    'Development Status :: 3 - Alpha',
-    'Programming Language :: Python',
-    'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3 :: Only',
-    'Programming Language :: Python :: 3.10',
-    'Programming Language :: Python :: 3.11',
-    'Programming Language :: Python :: 3.12',
-    'Programming Language :: Python :: 3.13',
-    'Programming Language :: Rust',
-    'Intended Audience :: Developers',
-    'Intended Audience :: Information Technology',
-    'License :: OSI Approved :: MPL 2.0 License',
-    'Operating System :: POSIX :: Linux',
-    'Operating System :: Microsoft :: Windows',
-    'Operating System :: MacOS',
-    'Typing :: Typed',
+authors = [
+    {name = "noaione", email = "noaione@n4o.xyz"},
 ]
+maintainers = [
+    {name = "noaione", email = "noaione@n4o.xyz"},
+]
+license = { text = "MPL-2.0" }
+keywords = ["utilities", "timestring", "mathexpr", "rust"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries",
+    "License :: OSI Approved :: MPL 2.0 License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Rust",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: MacOS",
+    "Private :: Do Not Upload",
+    "Typing :: Typed",
+]
+requires-python = ">=3.10"
+dynamic = ["version", "readme"]
+
+[project.urls]
+Homepage = "https://naoti.me"
+Repository = "https://github.com/naoTimesdev/fastnomicon.git"
+Issues = "https://github.com/naoTimesdev/fastnomicon/issues"
+Changelog = "https://github.com/naoTimesdev/fastnomicon/blob/master/CHANGELOG.md"
 
 [build-system]
 requires = ["maturin>=1,<2"]
@@ -36,10 +48,10 @@ bindings = "pyo3"
 line-length = 120
 
 [tool.ruff.lint]
-extend-select = ['Q', 'RUF100', 'C90', 'I']
+extend-select = ["Q", "RUF100", "C90", "I"]
 extend-ignore = [
-    'E721',  # using type() instead of isinstance() - we use this in tests
+    "E721",  # using type() instead of isinstance() - we use this in tests
 ]
-flake8-quotes = {inline-quotes = 'single', multiline-quotes = 'double'}
+flake8-quotes = { inline-quotes = "single", multiline-quotes = "double" }
 mccabe = { max-complexity = 13 }
-isort = { known-first-party = ['fastnomicon', 'tests'] }
+isort = { known-first-party = ["fastnomicon", "tests"] }
