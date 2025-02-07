@@ -31,6 +31,102 @@ pub enum TimeScale {
     Years,
 }
 
+impl TimeScale {
+    /// Create a short form representation of the [`TimeScale`]
+    pub fn short_form(&self) -> &'static str {
+        match self {
+            Self::Milliseconds => "ms",
+            Self::Seconds => "s",
+            Self::Minutes => "m",
+            Self::Hours => "h",
+            Self::Days => "d",
+            Self::Weeks => "w",
+            Self::Months => "mo",
+            Self::Years => "y",
+        }
+    }
+
+    /// Create a long form representation of the [`TimeScale`].
+    ///
+    /// This form will depends on the amount, use [`Self::long_form_plural`] instead if you always want to assume plural
+    pub fn long_form(&self, amount: u16) -> &'static str {
+        match self {
+            Self::Milliseconds => {
+                if amount > 1 {
+                    "milliseconds"
+                } else {
+                    "millisecond"
+                }
+            }
+            Self::Seconds => {
+                if amount > 1 {
+                    "seconds"
+                } else {
+                    "second"
+                }
+            }
+            Self::Minutes => {
+                if amount > 1 {
+                    "minutes"
+                } else {
+                    "minute"
+                }
+            }
+            Self::Hours => {
+                if amount > 1 {
+                    "hours"
+                } else {
+                    "hour"
+                }
+            }
+            Self::Days => {
+                if amount > 1 {
+                    "days"
+                } else {
+                    "day"
+                }
+            }
+            Self::Weeks => {
+                if amount > 1 {
+                    "weeks"
+                } else {
+                    "week"
+                }
+            }
+            Self::Months => {
+                if amount > 1 {
+                    "months"
+                } else {
+                    "month"
+                }
+            }
+            Self::Years => {
+                if amount > 1 {
+                    "years"
+                } else {
+                    "year"
+                }
+            }
+        }
+    }
+
+    /// Create a long form representation of the [`TimeScale`].
+    ///
+    /// This will always be in plural-form, use [`Self::long_form`] so it either use plural or singular
+    pub fn long_form_plural(&self) -> &'static str {
+        match self {
+            Self::Milliseconds => "milliseconds",
+            Self::Seconds => "seconds",
+            Self::Minutes => "minutes",
+            Self::Hours => "hours",
+            Self::Days => "days",
+            Self::Weeks => "weeks",
+            Self::Months => "months",
+            Self::Years => "years",
+        }
+    }
+}
+
 /// A simple time tuple that wraps a number in seconds and the time scale.
 #[derive(Debug, Clone, Copy)]
 pub struct TimeTuple(u16, TimeScale);
@@ -69,6 +165,23 @@ impl TimeTuple {
 impl PartialEq for TimeTuple {
     fn eq(&self, other: &Self) -> bool {
         self.time() == other.time() && self.scale() == other.scale()
+    }
+}
+
+impl Eq for TimeTuple {}
+
+impl Ord for TimeTuple {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        // Sort by TimeScale first, then by time
+        self.scale()
+            .cmp(&other.scale())
+            .then_with(|| self.time().cmp(&other.time()))
+    }
+}
+
+impl PartialOrd for TimeTuple {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
     }
 }
 
@@ -132,4 +245,28 @@ pub fn parse_timestring_as_duration(input: &str) -> IResult<&str, Duration> {
 /// - We only support number up to `65535` on each time scale.
 pub fn parse_timestring(input: &str) -> IResult<&str, Vec<TimeTuple>> {
     many1(parse_time_component).parse(input)
+}
+
+/// Expand back to a time string format
+///
+/// This use a more opinionated format to ensure best readability.
+pub fn expand_timestring(input: &[TimeTuple], long: bool) -> String {
+    let mut sorted = input.iter().collect::<Vec<_>>();
+    // Sort
+    sorted.sort();
+    // Reverse (big -> small)
+    sorted.reverse();
+
+    // Format
+    sorted
+        .into_iter()
+        .map(|&TimeTuple(number, time_unit)| {
+            if long {
+                format!("{} {}", number, time_unit.long_form(number))
+            } else {
+                format!("{}{}", number, time_unit.short_form())
+            }
+        })
+        .collect::<Vec<_>>()
+        .join(" ")
 }
