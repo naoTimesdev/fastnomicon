@@ -12,4 +12,7 @@ readme = "../README.md"
 
 [dependencies]
 nom.workspace = true
-shunting.workspace = true
+shunting = { workspace = true, optional = true }
+
+[features]
+math = ["dep:shunting"]

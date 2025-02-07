@@ -7,7 +7,7 @@ use nom::{
     combinator::map_res,
     multi::many1,
     sequence::{delimited, pair},
-    IResult,
+    IResult, Parser,
 };
 
 /// The time scale of the duration
@@ -73,15 +73,15 @@ impl PartialEq for TimeTuple {
 }
 
 fn parse_number(input: &str) -> IResult<&str, u16> {
-    map_res(digit1, str::parse)(input)
+    map_res(digit1, str::parse).parse(input)
 }
 
 fn parse_unit(input: &str) -> IResult<&str, &str> {
-    delimited(multispace0, alpha1, multispace0)(input)
+    delimited(multispace0, alpha1, multispace0).parse(input)
 }
 
 fn parse_time_component(input: &str) -> IResult<&str, TimeTuple> {
-    let (rest, (number, unit)) = pair(parse_number, parse_unit)(input)?;
+    let (rest, (number, unit)) = pair(parse_number, parse_unit).parse(input)?;
 
     let time_unit = match unit {
         "y" | "year" | "years" | "t" | "thn" | "tahun" => TimeScale::Years,
@@ -131,5 +131,5 @@ pub fn parse_timestring_as_duration(input: &str) -> IResult<&str, Duration> {
 /// # Note
 /// - We only support number up to `65535` on each time scale.
 pub fn parse_timestring(input: &str) -> IResult<&str, Vec<TimeTuple>> {
-    many1(parse_time_component)(input)
+    many1(parse_time_component).parse(input)
 }

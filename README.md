@@ -22,7 +22,7 @@ print(t_delta)  # -> 1:30:00
 
 The standard `parse_timestring` will be a custom class called `TimeTuple` which contains the stack information about each timestring (e.g. `1h30m` will be `[TimeTuple(time=1, scale=Hours), TimeTuple(time=30, scale=Minutes)]`).
 
-- `execute_math_expr`
+- `execute_math_expr` (available with `math` feature)
 
 A quick and easy way to parse complex mathematical expression using **Shunting-yard** algorithm.
 
